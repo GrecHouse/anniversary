@@ -1,0 +1,10 @@
+{
+  "domain": "anniversary",
+  "name": "Anniversary",
+  "documentation": "https://github.com/GrecHouse/anniversary",
+  "requirements": [],
+  "dependencies": [],
+  "codeowners": [
+    "@GrecHouse"
+  ]
+}
