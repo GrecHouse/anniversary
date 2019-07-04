@@ -9,7 +9,9 @@
 - TTS 로 사용할 수 있는 문구를 별도 센서 `sensor.anniversary_tts` 로 자동 생성합니다.
 
 <br>
-
+![Sensor](Screenshot_2019-07-01-15-04-00-992_com.android.chrome~01~01.png)
+<br>
+![TTS Sensor](Screenshot_2019-07-01-15-03-13-797_com.android.chrome~01~02.png)
 <br>
 
 ## Installation
