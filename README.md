@@ -87,6 +87,12 @@ sensor:
 
 <br>
 
+## korean-lunar-calendar 라이브러리 소스를 이용합니다.
+- https://pypi.org/project/korean-lunar-calendar/
+- https://github.com/usingsky/korean_lunar_calendar_py
+
+<br>
+
 ## 버그 또는 문의사항
 네이버 카페 [SmartThings&IoT Home](https://cafe.naver.com/stsmarthome/) `그레고리하우스`
 
