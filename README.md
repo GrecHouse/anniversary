@@ -7,6 +7,7 @@
 - 다가올 기념일 날짜도 알려줍니다.
 - 기념일에서 현재 날짜까지의 일자 카운트도 알려줍니다.
 - TTS 로 사용할 수 있는 문구를 별도 센서 `sensor.anniversary_tts` 로 자동 생성합니다.
+- [Lovelace UI 커스텀 카드](https://github.com/GrecHouse/anniversary-lovelace-card)를 이용할 수 있습니다.
 
 <br>
 <img src="https://raw.githubusercontent.com/GrecHouse/anniversary/master/Screenshot_2019-07-01-15-03-13-797_com.android.chrome~01~02.png" width="500px" />
