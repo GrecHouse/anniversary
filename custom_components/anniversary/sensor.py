@@ -277,7 +277,8 @@ class AnniversarySensor(Entity):
             'lunar_date_gapja': self.lunar_gapja(lunar_date),
             'past_days': self.past_days(today),
             'upcoming_count': self.upcoming_count(today),
-            'upcoming_date': dday[1]
+            'upcoming_date': dday[1],
+            'is_lunar': str(self._lunar)
         }
 
         global TTS
