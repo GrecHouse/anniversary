@@ -15,6 +15,14 @@
 <img src="https://raw.githubusercontent.com/GrecHouse/anniversary/master/Screenshot_2019-07-01-15-04-00-992_com.android.chrome~01~01.png" width="400px" />
 <br>
 
+## Version history
+| Version | Date        |               |
+| :-----: | :---------: | ------------- |
+| v1.0    | 2019.07.11  | First version  |
+| v1.1    | 2019.07.12  | 음력여부(is_lunar) 속성 추가 |
+
+<br>
+
 ## Installation
 
 - HA 설치 경로 아래 custom_component 에 파일을 넣어줍니다.\
