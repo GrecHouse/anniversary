@@ -12,8 +12,7 @@ HA 기념일 센서 : 기념일의 D-Day 정보와 양/음력 정보를 알려�
 
 """
 
-from datetime import timedelta
-from datetime import date
+from datetime import timedelta, date, datetime
 import logging
 
 import voluptuous as vol
@@ -24,6 +23,7 @@ from homeassistant.const import CONF_SENSORS, CONF_NAME, CONF_TYPE, ATTR_DATE
 from homeassistant.helpers.entity import Entity, async_generate_entity_id
 import homeassistant.helpers.config_validation as cv
 import homeassistant.util.dt as dt_util
+from homeassistant.util.json import load_json
 from homeassistant.helpers.event import async_track_point_in_utc_time
 
 _LOGGER = logging.getLogger(__name__)
@@ -31,9 +31,11 @@ _LOGGER = logging.getLogger(__name__)
 CONF_IS_LUNAR_DATE = 'lunar'
 CONF_INTERCALATION = 'intercalation'
 CONF_TTS_DAYS = 'tts_days'
+CONF_TTS_SCAN_INTERVAL = 'tts_scan_interval'
 
 TTS = {}
 INTERCALATION = ' (윤달)'
+PERSISTENCE = '.shopping_list.json'
 
 SENSOR_SCHEMA = vol.Schema({
     vol.Required(ATTR_DATE): cv.string,
@@ -46,6 +48,7 @@ SENSOR_SCHEMA = vol.Schema({
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_SENSORS): cv.schema_with_slug_keys(SENSOR_SCHEMA),
     vol.Optional(CONF_TTS_DAYS, default=3): cv.positive_int,
+    vol.Optional(CONF_TTS_SCAN_INTERVAL, default=86460): cv.positive_int,
 })
 
 
@@ -73,7 +76,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
 
         sensors.append(sensor)
 
-    sensor = AnniversaryTTSSensor(hass, "anniversary_tts", config.get(CONF_TTS_DAYS))
+    sensor = AnniversaryTTSSensor(hass, "anniversary_tts", config.get(CONF_TTS_DAYS), config.get(CONF_TTS_SCAN_INTERVAL))
     async_track_point_in_utc_time(
             hass, sensor.point_in_time_listener, sensor.get_next_interval())
     sensors.append(sensor)
@@ -83,10 +86,11 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
 
 class AnniversaryTTSSensor(Entity):
     """Implementation of a Anniversary TTS sensor."""
-    def __init__(self, hass, name, tts_days):
+    def __init__(self, hass, name, tts_days, tts_scan_interval):
         self._name = name
         self._state = ''
         self._tts_days = tts_days
+        self._tts_scan_interval = tts_scan_interval
         self.hass = hass
         self._update_internal_state(dt_util.utcnow())
 
@@ -104,16 +108,79 @@ class AnniversaryTTSSensor(Entity):
     def icon(self):
         """Icon to use in the frontend, if any."""
         return 'mdi:text-to-speech'
+    
+    @property
+    def device_state_attributes(self):
+        """Return the attribute(s) of the sensor"""
+        return self._attribute
 
-    def get_next_interval(self, now=None):
-        """Compute next time an update should occur."""
-        if now is None:
-            now = dt_util.utcnow()
-        now = dt_util.start_of_local_day(dt_util.as_local(now))
-        return now + timedelta(seconds=86460)
+    def solar_to_lunar(self, solarDate):
+        calendar = KoreanLunarCalendar()
+        calendar.setSolarDate(solarDate.year, solarDate.month, solarDate.day)
+        lunar = calendar.LunarIsoFormat()
+        lunar = lunar.replace(' Intercalation', INTERCALATION)
+        return lunar
+
+    def lunar_to_solar(self, lunarDate, intercal):
+        calendar = KoreanLunarCalendar()
+        calendar.setLunarDate(lunarDate.year, lunarDate.month, lunarDate.day, intercal)
+        return dt_util.parse_date(calendar.SolarIsoFormat())
 
     def _update_internal_state(self, time_date):
-        anniv_list = sorted(TTS.items(), key=(lambda x: x[1]))
+        
+        shopping_list = load_json(self.hass.config.path(PERSISTENCE), default=[])
+
+        todo_list = {}
+        tts_add_list = {}
+
+        for item in shopping_list:
+            if not item['complete']:
+                if item['name'].startswith('양') or item['name'].startswith('음'):
+                    isLunar = item['name'].startswith('음')
+
+                    try:
+                        todo_date = item['name'][1:5]
+                        todo_name = item['name'][6:]
+                        solar_date = ''
+                        ldate = ''
+                        intercal = False
+                        
+                        adddate = dt_util.parse_date(str(datetime.now().year) + '-' + todo_date[0:2] + '-' + todo_date[2:])
+
+                        if isLunar:
+                            intercal = '(윤)' in todo_name
+                            solar_date = self.lunar_to_solar(adddate, intercal)
+                            ldate = str(adddate.month) + "." + str(adddate.day)
+                            if intercal:
+                                ldate = ldate + INTERCALATION
+                                todo_name = todo_name.replace('(윤)','')
+                        else:
+                            solar_date = adddate
+                        
+                        if solar_date < datetime.now().date():
+                            solar_date = dt_util.parse_date(str(datetime.now().year+1) + '-' + todo_date[0:2] + '-' + todo_date[2:])
+                            if isLunar:
+                                solar_date = self.lunar_to_solar(solar_date, intercal)
+
+                        dday = (solar_date - datetime.now().date()).days
+                        sdate = str(solar_date.month) + "." + str(solar_date.day)
+
+                        if dday < self._tts_days + 1:
+                            tts_add_list[todo_name] = dday
+
+                        if isLunar:
+                            todo_list[todo_name] = [dday, sdate, ldate]
+                        else:
+                            todo_list[todo_name] = [dday, sdate, "solar"]
+
+                    except ValueError:
+                        _LOGGER.debug("Not date : %s", item['name'])
+
+        self._attribute = todo_list
+
+        tts_add_list.update(TTS)
+
+        anniv_list = sorted(tts_add_list.items(), key=(lambda x: x[1]))
         msg = ''
         for anniv in anniv_list:
             key = anniv[0]
@@ -128,6 +195,16 @@ class AnniversaryTTSSensor(Entity):
                 else:
                     msg = msg + " ".join([str(value)+"일 후는", key])
         self._state = msg
+
+    def get_next_interval(self, now=None):
+        """Compute next time an update should occur."""
+        interval = self._tts_scan_interval
+
+        if now is None:
+            now = dt_util.utcnow()
+        if interval == 86460 or interval is None:
+            now = dt_util.start_of_local_day(dt_util.as_local(now))
+        return now + timedelta(seconds=interval)
 
     @callback
     def point_in_time_listener(self, time_date):
