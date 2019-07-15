@@ -18,8 +18,9 @@
 ## Version history
 | Version | Date        |               |
 | :-----: | :---------: | ------------- |
-| v1.0    | 2019.07.11  | First version  |
-| v1.1    | 2019.07.12  | 음력여부(is_lunar) 속성 추가 |
+| v1.0    | 2019.07.04  | First version  |
+| v1.1    | 2019.07.05  | 음력여부(is_lunar) 속성 추가 |
+| v1.2    | 2019.07.15  | 장보기목록(shopping list) - anniversary_tts 센서 연동 기능 추가 |  
 
 <br>
 
@@ -70,6 +71,7 @@ sensor:
 |platform| (필수) anniversary |
 |sensors| (필수) 센서로 등록할 기념일 정보를 추가 |
 |tts_days| (옵션) TTS 문구로 자동 생성할 일수<br>지정한 일수 이하일때 문구로 추가됨<br>기본값은 3일 |
+|tts_scan_interval | (옵션) 장보기목록 스캔 주기 (seconds)<br>미설정시 매일 자정에 1번만 갱신 |
 
 
 ### 센서별 설정값
@@ -95,6 +97,21 @@ sensor:
 - type 에 따라 아이콘이 다르게 보입니다.
 - 4가지 타입 외에 임의의 타입을 선언해서 사용해도 무방합니다.\
 단, 아이콘은 기본값과 동일하게 보입니다.
+
+
+### 장보기목록(shopping list)을 이용한 TTS 센서 문구 추가 (v1.2 이후)
+- HA 화면의 `장보기목록` 에 아래 샘플처럼 `양` 또는 `음`으로 시작되는 항목을 추가하면 TTS 문구로 생성됩니다.
+- 또한 추가된 항목은 `sensor.anniversary_tts` 의 속성값으로 추가됩니다. 
+- [Lovelace UI 커스텀 카드](https://github.com/GrecHouse/anniversary-lovelace-card) 에도 추가됩니다.
+- 음력 윤달인 경우에는 타이틀에 `(윤)`을 추가하면 됩니다.
+
+```text
+[양/음][날짜-월일]-[타이틀]
+
+양0715-정수기 필터 교체
+음0511-음력일반샘플
+음0511-음력윤달샘플(윤)
+```
 
 <br>
 
