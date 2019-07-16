@@ -322,7 +322,7 @@ class AnniversarySensor(Entity):
             anniv = date(today.year, anniv.month, anniv.day)
 
         if self.is_past(today):
-            anniv = date(anniv.year+1, anniv.month, anniv.day)
+            anniv = date(today.year+1, anniv.month, anniv.day)
 
         delta = anniv - today
         return [delta.days, anniv.strftime('%Y-%m-%d')]
