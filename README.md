@@ -20,7 +20,8 @@
 | :-----: | :---------: | ------------- |
 | v1.0    | 2019.07.04  | First version  |
 | v1.1    | 2019.07.05  | 음력여부(is_lunar) 속성 추가 |
-| v1.2    | 2019.07.15  | 장보기목록(shopping list) - anniversary_tts 센서 연동 기능 추가 |  
+| v1.2    | 2019.07.15  | 장보기목록(shopping list) - anniversary_tts 센서 연동 기능 추가 | 
+| v1.21   | 2019.07.16  | 음력 comming date 버그 수정 |
 
 <br>
 
