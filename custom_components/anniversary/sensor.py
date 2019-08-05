@@ -173,8 +173,9 @@ class AnniversaryTTSSensor(Entity):
                         else:
                             todo_list[todo_name] = [dday, sdate, "solar"]
 
-                    except ValueError:
-                        _LOGGER.debug("Not date : %s", item['name'])
+                    except:
+                        _LOGGER.warn("Not date : %s", item['name'])
+                        pass
 
         self._attribute = todo_list
 
