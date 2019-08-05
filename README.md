@@ -115,6 +115,27 @@ sensor:
 음0511-음력윤달샘플(윤)
 ```
 
+- TTS automation.yaml sample
+```yaml
+- alias: "Morning briefing"
+  trigger:
+    - platform: time
+      at: '06:30:00'
+  condition:
+    condition: state
+    entity_id: switch.xxx
+    state: 'on'
+  action:
+    service: tts.google_translate_say
+    data_template:
+      entity_id: media_player.googlemini3
+      language: 'ko'
+      cache: false
+      message: >
+        "{% if not is_state('sensor.anniversary_tts', '') -%} {{states.sensor.anniversary_tts.state}} 입니다.{%- endif %}
+        좋은하루 되세요."
+```
+
 <br>
 
 ## korean-lunar-calendar 라이브러리 소스를 이용합니다.
