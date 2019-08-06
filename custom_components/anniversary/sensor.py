@@ -270,6 +270,10 @@ class AnniversarySensor(Entity):
         calendar = KoreanLunarCalendar()
         if thisYear:
             calendar.setLunarDate(today.year, lunarDate.month, lunarDate.day, self._intercalation)
+            if calendar.SolarIsoFormat() == '0000-00-00':
+                lunarDate2 = lunarDate - timedelta(1)
+                calendar.setLunarDate(today.year, lunarDate2.month, lunarDate2.day, self._intercalation)
+                _LOGGER.warn("Non-existent date correction : %s -> %s", lunarDate, calendar.SolarIsoFormat())
         else:
             calendar.setLunarDate(lunarDate.year, lunarDate.month, lunarDate.day, self._intercalation)
         return dt_util.parse_date(calendar.SolarIsoFormat())
