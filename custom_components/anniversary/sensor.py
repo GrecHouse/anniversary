@@ -133,6 +133,15 @@ class AnniversaryTTSSensor(Entity):
         todo_list = {}
         tts_add_list = {}
 
+        keys = {}
+        def rename(todo_name):
+            if todo_name in keys:
+                keys[todo_name] += 1
+                return ''.join([todo_name,'(',str(keys[todo_name]),')'])
+            else:
+                keys[todo_name] = 1
+                return todo_name
+        
         for item in shopping_list:
             if not item['complete']:
                 if item['name'].startswith('양') or item['name'].startswith('음'):
@@ -164,14 +173,16 @@ class AnniversaryTTSSensor(Entity):
 
                         dday = (solar_date - datetime.now().date()).days
                         sdate = str(solar_date.month) + "." + str(solar_date.day)
+                        
+                        todo_rename = rename(todo_name)
 
                         if dday < self._tts_days + 1:
-                            tts_add_list[todo_name] = dday
+                            tts_add_list[todo_rename] = dday
 
                         if isLunar:
-                            todo_list[todo_name] = [dday, sdate, ldate]
+                            todo_list[todo_rename] = [dday, sdate, ldate, todo_name]
                         else:
-                            todo_list[todo_name] = [dday, sdate, "solar"]
+                            todo_list[todo_rename] = [dday, sdate, "solar", todo_name]
 
                     except:
                         _LOGGER.warn("Not date : %s", item['name'])
@@ -184,9 +195,11 @@ class AnniversaryTTSSensor(Entity):
         anniv_list = sorted(tts_add_list.items(), key=(lambda x: x[1]))
         msg = ''
         for anniv in anniv_list:
-            key = anniv[0]
+            name = anniv[0]
             value = anniv[1]
             if value < self._tts_days + 1:
+                if todo_list.get(name) is not None:
+                    name = todo_list.get(name)[3]
                 if msg != '':
                     msg = msg + ", "
                 if value == 0:
