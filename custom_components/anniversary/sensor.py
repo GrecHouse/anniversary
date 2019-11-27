@@ -203,11 +203,11 @@ class AnniversaryTTSSensor(Entity):
                 if msg != '':
                     msg = msg + ", "
                 if value == 0:
-                    msg = msg + " ".join(["오늘은", key])
+                    msg = msg + " ".join(["오늘은", name])
                 elif value == 1:
-                    msg = msg + " ".join(["내일은", key])
+                    msg = msg + " ".join(["내일은", name])
                 else:
-                    msg = msg + " ".join([str(value)+"일 후는", key])
+                    msg = msg + " ".join([str(value)+"일 후는", name])
         self._state = msg
 
     def get_next_interval(self, now=None):
