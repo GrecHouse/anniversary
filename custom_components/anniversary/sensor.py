@@ -334,13 +334,17 @@ class AnniversarySensor(Entity):
 
     def d_day(self, today):
         anniv = self._date
-        if self._lunar:
-            anniv = self.lunar_to_solar(today, True)
-        else:
-            anniv = date(today.year, anniv.month, anniv.day)
-
         if self.is_past(today):
-            anniv = date(today.year+1, anniv.month, anniv.day)
+            if self._lunar:
+                today = date(today.year+1, today.month, today.day)
+                anniv = self.lunar_to_solar(today, True)
+            else:
+                anniv = date(today.year+1, anniv.month, anniv.day)
+        else:
+            if self._lunar:
+                anniv = self.lunar_to_solar(today, True)
+            else:
+                anniv = date(today.year, anniv.month, anniv.day)
 
         delta = anniv - today
         return [delta.days, anniv.strftime('%Y-%m-%d')]
