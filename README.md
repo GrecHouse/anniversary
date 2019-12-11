@@ -26,6 +26,7 @@
 | v1.23   | 2019.08.06  | 음력 없는 날짜는 (예: 2019년 4월 30일) 하루 앞당겨서 처리 |
 | v1.24   | 2019.11.25  | 장보기목록 동일 명칭 중복 항목 버그 수정 |
 | v1.25   | 2019.12.02  | 차년도 음력처리 버그 수정 |
+| v1.3    | 2019.12.11  | mm-dd 형식 지원 |
 
 <br>
 
@@ -62,9 +63,14 @@ sensor:
       steve_jobs:
         name: '스티브잡스 기일'
         date: '2011-09-09'
-        type: 'memorial'
+        type: 'event'
         lunar: true
         intercalation: false
+      anniv_mmdd:
+        name: '제사'
+        date: '05-15'
+        type: 'memorial'
+        lunar: true
 ```
 
 <br>
@@ -83,7 +89,7 @@ sensor:
 
 |옵션|값|
 |--|--|
-|date| (필수) 기념일 날짜 |
+|date| (필수) 기념일 날짜. yyyy-mm-dd 또는 mm-dd 형식으로 설정 |
 |name| (옵션) 기념일 이름. 지정하지 않으면 센서명으로 저장됨 |
 |type| (옵션) 기념일 종류. 기본값은 anniversary |
 |lunar| (옵션) 음력여부. 기본값은 false |
