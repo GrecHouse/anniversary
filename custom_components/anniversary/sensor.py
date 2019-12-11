@@ -70,7 +70,16 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
         if name == '':
             name = device
 
-        sensor = AnniversarySensor(hass, device, name, date_str, is_lunar, is_intercalation, anniv_type)
+        is_mmdd = False
+        if dt_util.parse_date(date_str) is None:
+            year_added_date_str = str(dt_util.as_local(dt_util.utcnow()).date().year) + "-" + date_str
+            if dt_util.parse_date(year_added_date_str) is not None:
+                date_str = year_added_date_str
+                is_mmdd = True
+            else:
+                continue
+
+        sensor = AnniversarySensor(hass, device, name, date_str, is_lunar, is_intercalation, anniv_type, is_mmdd)
         async_track_point_in_utc_time(
             hass, sensor.point_in_time_listener, sensor.get_next_interval())
 
@@ -232,7 +241,7 @@ class AnniversaryTTSSensor(Entity):
 class AnniversarySensor(Entity):
     """Implementation of a Anniversary sensor."""
 
-    def __init__(self, hass, deviceId, name, dateStr, lunar, intercalation, aType):
+    def __init__(self, hass, deviceId, name, dateStr, lunar, intercalation, aType, mmdd):
         """Initialize the sensor."""
         self.entity_id = async_generate_entity_id(ENTITY_ID_FORMAT, deviceId, hass=hass)
         self._name = name
@@ -240,6 +249,7 @@ class AnniversarySensor(Entity):
         self._lunar = lunar
         self._intercalation = intercalation
         self._type = aType
+        self._mmdd = mmdd
         self._state = None
         self.hass = hass
         self._update_internal_state(dt_util.utcnow())
@@ -281,7 +291,7 @@ class AnniversarySensor(Entity):
     def lunar_to_solar(self, today, thisYear):
         lunarDate = self._date
         calendar = KoreanLunarCalendar()
-        if thisYear:
+        if thisYear or self._mmdd:
             calendar.setLunarDate(today.year, lunarDate.month, lunarDate.day, self._intercalation)
             if calendar.SolarIsoFormat() == '0000-00-00':
                 lunarDate2 = lunarDate - timedelta(1)
@@ -369,15 +379,16 @@ class AnniversarySensor(Entity):
         else:
             lunar_date = self.solar_to_lunar(self._date)
 
-        self._attribute = {
+        self._attribute = { 
             'type': self._type,
             'solar_date': solar_date.strftime('%Y-%m-%d'),
             'lunar_date': lunar_date,
             'lunar_date_gapja': self.lunar_gapja(lunar_date),
-            'past_days': self.past_days(today),
-            'upcoming_count': self.upcoming_count(today),
+            'past_days': '-' if self._mmdd else self.past_days(today),
+            'upcoming_count': '-' if self._mmdd else self.upcoming_count(today),
             'upcoming_date': dday[1],
-            'is_lunar': str(self._lunar)
+            'is_lunar': str(self._lunar),
+            'is_mmdd': str(self._mmdd)
         }
 
         global TTS
