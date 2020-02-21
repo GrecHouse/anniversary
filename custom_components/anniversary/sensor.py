@@ -317,7 +317,7 @@ class AnniversarySensor(Entity):
             anniv = self.lunar_to_solar(today, True)
         else:
             anniv = date(today.year, anniv.month, anniv.day)
-        if (today.month > anniv.month) or ((today.month == anniv.month) and (today.day>anniv.day)):
+        if (anniv-today).days < 0:
             return True
         else:
             return False
