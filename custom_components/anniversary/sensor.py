@@ -346,10 +346,16 @@ class AnniversarySensor(Entity):
         anniv = self._date
         if self.is_past(today):
             if self._lunar:
-                newday = date(today.year+1, today.month, today.day)
+                if today.month == 2 and today.day == 29:
+                    newday = date(today.year+1, today.month, today.day-1)
+                else:
+                    newday = date(today.year+1, today.month, today.day)
                 anniv = self.lunar_to_solar(newday, True)
             else:
-                anniv = date(today.year+1, anniv.month, anniv.day)
+                if anniv.month == 2 and anniv.day == 29:
+                   anniv = date(today.year+1, anniv.month, anniv.day-1)
+                else:
+                   anniv = date(today.year+1, anniv.month, anniv.day)
         else:
             if self._lunar:
                 anniv = self.lunar_to_solar(today, True)
