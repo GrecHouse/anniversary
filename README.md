@@ -156,6 +156,6 @@ sensor:
 <br>
 
 ## 버그 또는 문의사항
-네이버 카페 [HomeAssistant](https://cafe.naver.com/koreassistant/) `그렉하우스`
+네이버 카페 [HomeAssistant](https://cafe.naver.com/koreassistant/) `그렉하우스`<br>
 네이버 카페 [SmartThings&IoT Home](https://cafe.naver.com/stsmarthome/) `그레고리하우스`
 
