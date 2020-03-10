@@ -1,4 +1,5 @@
 ![version](https://img.shields.io/badge/version-1.32-blue)
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 
 # Anniversary Sensor for Home Assistant
 
@@ -36,12 +37,19 @@
 
 ## Installation
 
+### 직접 설치
 - HA 설치 경로 아래 custom_component 에 파일을 넣어줍니다.\
 `<config directory>/custom_components/anniversary/__init__.py`\
 `<config directory>/custom_components/anniversary/manifest.json`\
 `<config directory>/custom_components/anniversary/sensor.py`
 - configuration.yaml 파일에 설정을 추가합니다.
 - Home-Assistant 를 재시작합니다.
+
+### HACS로 설치
+- HACS > SETTINGS 메뉴 선택
+- ADD CUSTOM REPOSITORY에 `https://github.com/GrecHouse/anniversary` 입력, \
+  Category에 `Integration` 선택 후 저장
+- HACS > INTEGRATIONS 메뉴에서 `[KR] Anniversary Sensor` 검색하여 설치
 
 <br>
 
