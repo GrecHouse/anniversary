@@ -1,3 +1,5 @@
+![version](https://img.shields.io/badge/version-1.32-blue)
+
 # Anniversary Sensor for Home Assistant
 
 홈어시스턴트 커스텀 컴포넌트입니다.\
