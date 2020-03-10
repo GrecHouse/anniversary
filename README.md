@@ -12,9 +12,9 @@
 - [Lovelace UI 커스텀 카드](https://github.com/GrecHouse/anniversary-lovelace-card)를 이용할 수 있습니다.
 
 <br>
-<img src="https://raw.githubusercontent.com/GrecHouse/anniversary/master/Screenshot_2019-07-01-15-03-13-797_com.android.chrome~01~02.png" width="500px" />
+<img src="https://user-images.githubusercontent.com/49514473/76294542-5d98e700-62f6-11ea-9860-7dfe9e69a632.png" width="500px" />
 <br>
-<img src="https://raw.githubusercontent.com/GrecHouse/anniversary/master/Screenshot_2019-07-01-15-04-00-992_com.android.chrome~01~01.png" width="400px" />
+<img src="https://user-images.githubusercontent.com/49514473/76294548-612c6e00-62f6-11ea-8c78-2494bc8709f4.png" width="400px" />
 <br>
 
 ## Version history
