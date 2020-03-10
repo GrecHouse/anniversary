@@ -1,0 +1,6 @@
+{
+  "name": "[KR] Anniversary Sensor",
+  "country": "KR",
+  "domains": ["sensor"],  
+  "render_readme": true
+}
