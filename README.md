@@ -1,4 +1,4 @@
-![version](https://img.shields.io/badge/version-1.32-blue)
+![version](https://img.shields.io/badge/version-1.4-blue)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 
 # Anniversary Sensor for Home Assistant
@@ -32,6 +32,7 @@
 | v1.3    | 2019.12.11  | mm-dd 형식 지원 |
 | v1.31   | 2020.02.21  | 해 바뀌는 음력 처리 버그 수정 |
 | v1.32   | 2020.02.29  | 2월 29일 버그 수정 수정 |
+| v1.4    | 2020.03.16  | KoreanLunarCalendar 라이브러리 manifest 처리 |
 
 <br>
 
@@ -161,7 +162,6 @@ sensor:
 
 ## korean-lunar-calendar 라이브러리 소스를 이용합니다.
 - https://pypi.org/project/korean-lunar-calendar/
-- https://github.com/usingsky/korean_lunar_calendar_py
 
 <br>
 
