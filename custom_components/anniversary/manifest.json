@@ -2,9 +2,7 @@
   "domain": "anniversary",
   "name": "Anniversary",
   "documentation": "https://github.com/GrecHouse/anniversary",
-  "requirements": [],
+  "requirements": ["korean-lunar-calendar==0.2.0"],
   "dependencies": [],
-  "codeowners": [
-    "@GrecHouse"
-  ]
+  "codeowners": ["@GrecHouse"]
 }
