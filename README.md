@@ -47,10 +47,11 @@
 - Home-Assistant 를 재시작합니다.
 
 ### HACS로 설치
-- HACS > SETTINGS 메뉴 선택
-- ADD CUSTOM REPOSITORY에 `https://github.com/GrecHouse/anniversary` 입력, \
-  Category에 `Integration` 선택 후 저장
-- HACS > INTEGRATIONS 메뉴에서 `[KR] Anniversary Sensor` 검색하여 설치
+- HACS > Integrations 메뉴 선택
+- 우측 상단 메뉴 버튼 클릭 후 Custom repositories 선택
+- Add Custom Repository URL 에 `https://github.com/GrecHouse/anniversary` 입력, \
+  Category에 `Integration` 선택 후 ADD
+- HACS > Integrations 메뉴에서 우측 하단 + 버튼 누르고 `[KR] Anniversary Sensor` 검색하여 설치
 
 <br>
 
