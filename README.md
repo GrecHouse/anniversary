@@ -1,4 +1,4 @@
-![version](https://img.shields.io/badge/version-1.4-blue)
+![version](https://img.shields.io/badge/version-1.4.1-blue)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 
 # Anniversary Sensor for Home Assistant
@@ -24,15 +24,16 @@
 | v1.0    | 2019.07.04  | First version  |
 | v1.1    | 2019.07.05  | 음력여부(is_lunar) 속성 추가 |
 | v1.2    | 2019.07.15  | 장보기목록(shopping list) - anniversary_tts 센서 연동 기능 추가 | 
-| v1.21   | 2019.07.16  | 음력 comming date 버그 수정 |
-| v1.22   | 2019.08.05  | 장보기목록 설정 오류시 회피 처리 |
-| v1.23   | 2019.08.06  | 음력 없는 날짜는 (예: 2019년 4월 30일) 하루 앞당겨서 처리 |
-| v1.24   | 2019.11.25  | 장보기목록 동일 명칭 중복 항목 버그 수정 |
-| v1.25   | 2019.12.02  | 차년도 음력처리 버그 수정 |
+| v1.2.1  | 2019.07.16  | 음력 comming date 버그 수정 |
+| v1.2.2  | 2019.08.05  | 장보기목록 설정 오류시 회피 처리 |
+| v1.2.3  | 2019.08.06  | 음력 없는 날짜는 (예: 2019년 4월 30일) 하루 앞당겨서 처리 |
+| v1.2.4  | 2019.11.25  | 장보기목록 동일 명칭 중복 항목 버그 수정 |
+| v1.2.5  | 2019.12.02  | 차년도 음력처리 버그 수정 |
 | v1.3    | 2019.12.11  | mm-dd 형식 지원 |
-| v1.31   | 2020.02.21  | 해 바뀌는 음력 처리 버그 수정 |
-| v1.32   | 2020.02.29  | 2월 29일 버그 수정 수정 |
+| v1.3.1  | 2020.02.21  | 해 바뀌는 음력 처리 버그 수정 |
+| v1.3.2  | 2020.02.29  | 2월 29일 버그 수정 |
 | v1.4    | 2020.03.16  | KoreanLunarCalendar 라이브러리 manifest 처리 |
+| v1.4.1  | 2020.02.29  | 2월 29일 오류 및 KLC lib. bug bypass 처리 |
 
 <br>
 
@@ -168,5 +169,5 @@ sensor:
 
 ## 버그 또는 문의사항
 네이버 카페 [HomeAssistant](https://cafe.naver.com/koreassistant/) `그렉하우스`<br>
-네이버 카페 [SmartThings&IoT Home](https://cafe.naver.com/stsmarthome/) `그레고리하우스`
+네이버 카페 [SmartThings&IoT Home](https://cafe.naver.com/stsmarthome/) `그렉하우스`
 
