@@ -306,9 +306,15 @@ class AnniversarySensor(Entity):
         if '윤달' in lunarDate:
             intercalation = True
             lunarDate = lunarDate.replace(INTERCALATION,'')
-        lunar = dt_util.parse_date(lunarDate)
         calendar = KoreanLunarCalendar()
-        calendar.setLunarDate(lunar.year, lunar.month, lunar.day, intercalation)
+        try:
+            lunar = dt_util.parse_date(lunarDate)
+            calendar.setLunarDate(lunar.year, lunar.month, lunar.day, intercalation)
+        except AttributeError: 
+            try:
+                calendar.setLunarDate(lunarDate[:4], lunarDate[5:7], lunarDate[8:], intercalation)
+            except:
+                return "-"
         return calendar.getGapJaString()
 
     def is_past(self, today):
@@ -353,9 +359,9 @@ class AnniversarySensor(Entity):
                 anniv = self.lunar_to_solar(newday, True)
             else:
                 if anniv.month == 2 and anniv.day == 29:
-                   anniv = date(today.year+1, anniv.month, anniv.day-1)
+                    anniv = date(today.year+1, anniv.month, anniv.day-1)
                 else:
-                   anniv = date(today.year+1, anniv.month, anniv.day)
+                    anniv = date(today.year+1, anniv.month, anniv.day)
         else:
             if self._lunar:
                 anniv = self.lunar_to_solar(today, True)
