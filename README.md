@@ -34,6 +34,7 @@
 | v1.3.2  | 2020.02.29  | 2월 29일 버그 수정 |
 | v1.4    | 2020.03.16  | KoreanLunarCalendar 라이브러리 manifest 처리 |
 | v1.4.1  | 2020.12.11  | 2월 29일 오류 및 KLC lib. bug bypass 처리 |
+| v1.5    | 2021.05.03  | 한국나이(Korean Age) attributes 추가 |
 
 <br>
 
@@ -120,6 +121,7 @@ sensor:
 |memorial|기일|
 |wedding|결혼기념일|
 
+- type 이  `birth` 일 경우 한국 나이 (Korean Age) 속성이 추가됩니다.
 - type 에 따라 아이콘이 다르게 보입니다.
 - 4가지 타입 외에 임의의 타입을 선언해서 사용해도 무방합니다.\
 단, 아이콘은 기본값과 동일하게 보입니다.
