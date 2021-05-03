@@ -335,8 +335,9 @@ class AnniversarySensor(Entity):
         delta = today - anniv
         return delta.days + 1
 
-    def korean_age(self, today):
-        return today.year - self._date.year + 1
+    def korean_age(self, today, dday):
+        addyear = 1 + dt_util.parse_date(dday).year - today.year
+        return today.year - self._date.year + addyear
 
     def upcoming_count(self, today):
         anniv = self._date
@@ -399,6 +400,7 @@ class AnniversarySensor(Entity):
             'past_days': '-' if self._mmdd else self.past_days(today),
             'upcoming_count': '-' if self._mmdd else self.upcoming_count(today),
             'upcoming_date': dday[1],
+            'korean_age': '-' if self._mmdd or self._type != 'birth' else self.korean_age(today, dday[1]),
             'is_lunar': str(self._lunar),
             'is_mmdd': str(self._mmdd)
         }
