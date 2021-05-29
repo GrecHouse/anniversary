@@ -4,5 +4,6 @@
   "documentation": "https://github.com/GrecHouse/anniversary",
   "requirements": ["korean-lunar-calendar==0.2.0"],
   "dependencies": [],
-  "codeowners": ["@GrecHouse"]
+  "codeowners": ["@GrecHouse"],
+  "version": "1.5.1"
 }
