@@ -1,4 +1,4 @@
-![version](https://img.shields.io/badge/version-1.5-blue)
+![version](https://img.shields.io/badge/version-1.5.1-blue)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 
 # Anniversary Sensor for Home Assistant
@@ -35,6 +35,7 @@
 | v1.4    | 2020.03.16  | KoreanLunarCalendar 라이브러리 manifest 처리 |
 | v1.4.1  | 2020.12.11  | 2월 29일 오류 및 KLC lib. bug bypass 처리 |
 | v1.5    | 2021.05.03  | 한국나이(Korean Age) attributes 추가 |
+| v1.5.1  | 2021.05.29  | added version to manifest.json |
 
 <br>
 
