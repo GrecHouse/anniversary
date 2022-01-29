@@ -36,6 +36,7 @@
 | v1.4.1  | 2020.12.11  | 2월 29일 오류 및 KLC lib. bug bypass 처리 |
 | v1.5    | 2021.05.03  | 한국나이(Korean Age) attributes 추가 |
 | v1.5.1  | 2021.05.29  | added version to manifest.json |
+| v1.6    | 2022.01.29  | 연초 음력처리 개선 |
 
 <br>
 
