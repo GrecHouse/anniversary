@@ -164,10 +164,13 @@ class AnniversaryTTSSensor(Entity):
                         intercal = False
                         
                         adddate = dt_util.parse_date(str(datetime.now().year) + '-' + todo_date[0:2] + '-' + todo_date[2:])
+                        adddate_early = dt_util.parse_date(str(datetime.now().year-1) + '-' + todo_date[0:2] + '-' + todo_date[2:])
 
                         if isLunar:
                             intercal = '(윤)' in todo_name
-                            solar_date = self.lunar_to_solar(adddate, intercal)
+                            solar_date = self.lunar_to_solar(adddate_early, intercal)
+                            if solar_date < datetime.now().date():
+                                solar_date = self.lunar_to_solar(adddate, intercal)
                             ldate = str(adddate.month) + "." + str(adddate.day)
                             if intercal:
                                 ldate = ldate + INTERCALATION
