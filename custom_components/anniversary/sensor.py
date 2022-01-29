@@ -301,6 +301,16 @@ class AnniversarySensor(Entity):
             calendar.setLunarDate(lunarDate.year, lunarDate.month, lunarDate.day, self._intercalation)
         return dt_util.parse_date(calendar.SolarIsoFormat())
 
+    def lunar_to_solar_early_day(self, today):
+        lunarDate = self._date
+        calendar = KoreanLunarCalendar()
+        calendar.setLunarDate(today.year-1, lunarDate.month, lunarDate.day, self._intercalation)
+        if calendar.SolarIsoFormat() == '0000-00-00':
+            lunarDate2 = lunarDate - timedelta(1)
+            calendar.setLunarDate(today.year-1, lunarDate2.month, lunarDate2.day, self._intercalation)
+            _LOGGER.warn("Non-existent date correction : %s -> %s", lunarDate, calendar.SolarIsoFormat())
+        return dt_util.parse_date(calendar.SolarIsoFormat())
+
     def lunar_gapja(self, lunarDate):
         intercalation = False
         if '윤달' in lunarDate:
@@ -351,6 +361,13 @@ class AnniversarySensor(Entity):
 
     def d_day(self, today):
         anniv = self._date
+
+        if self._lunar:
+            anniv_early_day = self.lunar_to_solar_early_day(today)
+            delta = anniv_early_day - today
+            if delta.days >= 0:
+                return [delta.days, anniv_early_day.strftime('%Y-%m-%d')]
+
         if self.is_past(today):
             if self._lunar:
                 if today.month == 2 and today.day == 29:
