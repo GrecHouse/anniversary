@@ -5,5 +5,5 @@
   "requirements": ["korean-lunar-calendar==0.2.0"],
   "dependencies": [],
   "codeowners": ["@GrecHouse"],
-  "version": "1.6"
+  "version": "1.6.1"
 }
