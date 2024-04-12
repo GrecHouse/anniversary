@@ -3,6 +3,11 @@
 
 # Anniversary Sensor for Home Assistant
 
+> 🎉 통합구성요소 버전을 사용하려면 아래 repo로 이동하세요. 보다 쉬운 설정이 가능합니다.\
+> https://github.com/GrecHouse/anniversary-calculator
+
+<br><br>
+
 홈어시스턴트 커스텀 컴포넌트입니다.\
 기념일 D-Day를 센서로 알려줍니다.
 - 음력을 지원합니다.
