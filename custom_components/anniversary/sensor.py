@@ -98,6 +98,7 @@ class AnniversaryTTSSensor(Entity):
     def __init__(self, hass, name, tts_days, tts_scan_interval):
         self._name = name
         self._state = ''
+        self._attribute = ''
         self._tts_days = tts_days
         self._tts_scan_interval = tts_scan_interval
         self.hass = hass
@@ -136,91 +137,93 @@ class AnniversaryTTSSensor(Entity):
         return dt_util.parse_date(calendar.SolarIsoFormat())
 
     def _update_internal_state(self, time_date):
-        
-        shopping_list = load_json(self.hass.config.path(PERSISTENCE), default=[])
 
-        todo_list = {}
-        tts_add_list = {}
-
-        keys = {}
-        def rename(todo_name):
-            if todo_name in keys:
-                keys[todo_name] += 1
-                return ''.join([todo_name,'(',str(keys[todo_name]),')'])
-            else:
-                keys[todo_name] = 1
-                return todo_name
-        
-        for item in shopping_list:
-            if not item['complete']:
-                if item['name'].startswith('양') or item['name'].startswith('음'):
-                    isLunar = item['name'].startswith('음')
-
-                    try:
-                        todo_date = item['name'][1:5]
-                        todo_name = item['name'][6:]
-                        solar_date = ''
-                        ldate = ''
-                        intercal = False
-                        
-                        adddate = dt_util.parse_date(str(datetime.now().year) + '-' + todo_date[0:2] + '-' + todo_date[2:])
-                        adddate_early = dt_util.parse_date(str(datetime.now().year-1) + '-' + todo_date[0:2] + '-' + todo_date[2:])
-
-                        if isLunar:
-                            intercal = '(윤)' in todo_name
-                            solar_date = self.lunar_to_solar(adddate_early, intercal)
-                            if solar_date < datetime.now().date():
-                                solar_date = self.lunar_to_solar(adddate, intercal)
-                            ldate = str(adddate.month) + "." + str(adddate.day)
-                            if intercal:
-                                ldate = ldate + INTERCALATION
-                                todo_name = todo_name.replace('(윤)','')
-                        else:
-                            solar_date = adddate
-                        
-                        if solar_date < datetime.now().date():
-                            solar_date = dt_util.parse_date(str(datetime.now().year+1) + '-' + todo_date[0:2] + '-' + todo_date[2:])
-                            if isLunar:
-                                solar_date = self.lunar_to_solar(solar_date, intercal)
-
-                        dday = (solar_date - datetime.now().date()).days
-                        sdate = str(solar_date.month) + "." + str(solar_date.day)
-                        
-                        todo_rename = rename(todo_name)
-
-                        if dday < self._tts_days + 1:
-                            tts_add_list[todo_rename] = dday
-
-                        if isLunar:
-                            todo_list[todo_rename] = [dday, sdate, ldate, todo_name]
-                        else:
-                            todo_list[todo_rename] = [dday, sdate, "solar", todo_name]
-
-                    except:
-                        _LOGGER.warn("Not date : %s", item['name'])
-                        pass
-
-        self._attribute = todo_list
-
-        tts_add_list.update(TTS)
-
-        anniv_list = sorted(tts_add_list.items(), key=(lambda x: x[1]))
-        msg = ''
-        for anniv in anniv_list:
-            name = anniv[0]
-            value = anniv[1]
-            if value < self._tts_days + 1:
-                if todo_list.get(name) is not None:
-                    name = todo_list.get(name)[3]
-                if msg != '':
-                    msg = msg + ", "
-                if value == 0:
-                    msg = msg + " ".join(["오늘은", name])
-                elif value == 1:
-                    msg = msg + " ".join(["내일은", name])
+        def _load_setting():
+            shopping_list = load_json(self.hass.config.path(PERSISTENCE), default=[])
+    
+            todo_list = {}
+            tts_add_list = {}
+    
+            keys = {}
+            def rename(todo_name):
+                if todo_name in keys:
+                    keys[todo_name] += 1
+                    return ''.join([todo_name,'(',str(keys[todo_name]),')'])
                 else:
-                    msg = msg + " ".join([str(value)+"일 후는", name])
-        self._state = msg
+                    keys[todo_name] = 1
+                    return todo_name
+            
+            for item in shopping_list:
+                if not item['complete']:
+                    if item['name'].startswith('양') or item['name'].startswith('음'):
+                        isLunar = item['name'].startswith('음')
+    
+                        try:
+                            todo_date = item['name'][1:5]
+                            todo_name = item['name'][6:]
+                            solar_date = ''
+                            ldate = ''
+                            intercal = False
+                            
+                            adddate = dt_util.parse_date(str(datetime.now().year) + '-' + todo_date[0:2] + '-' + todo_date[2:])
+                            adddate_early = dt_util.parse_date(str(datetime.now().year-1) + '-' + todo_date[0:2] + '-' + todo_date[2:])
+    
+                            if isLunar:
+                                intercal = '(윤)' in todo_name
+                                solar_date = self.lunar_to_solar(adddate_early, intercal)
+                                if solar_date < datetime.now().date():
+                                    solar_date = self.lunar_to_solar(adddate, intercal)
+                                ldate = str(adddate.month) + "." + str(adddate.day)
+                                if intercal:
+                                    ldate = ldate + INTERCALATION
+                                    todo_name = todo_name.replace('(윤)','')
+                            else:
+                                solar_date = adddate
+                            
+                            if solar_date < datetime.now().date():
+                                solar_date = dt_util.parse_date(str(datetime.now().year+1) + '-' + todo_date[0:2] + '-' + todo_date[2:])
+                                if isLunar:
+                                    solar_date = self.lunar_to_solar(solar_date, intercal)
+    
+                            dday = (solar_date - datetime.now().date()).days
+                            sdate = str(solar_date.month) + "." + str(solar_date.day)
+                            
+                            todo_rename = rename(todo_name)
+    
+                            if dday < self._tts_days + 1:
+                                tts_add_list[todo_rename] = dday
+    
+                            if isLunar:
+                                todo_list[todo_rename] = [dday, sdate, ldate, todo_name]
+                            else:
+                                todo_list[todo_rename] = [dday, sdate, "solar", todo_name]
+    
+                        except:
+                            _LOGGER.warn("Not date : %s", item['name'])
+                            pass
+    
+            self._attribute = todo_list
+
+            tts_add_list.update(TTS)
+    
+            anniv_list = sorted(tts_add_list.items(), key=(lambda x: x[1]))
+            msg = ''
+            for anniv in anniv_list:
+                name = anniv[0]
+                value = anniv[1]
+                if value < self._tts_days + 1:
+                    if todo_list.get(name) is not None:
+                        name = todo_list.get(name)[3]
+                    if msg != '':
+                        msg = msg + ", "
+                    if value == 0:
+                        msg = msg + " ".join(["오늘은", name])
+                    elif value == 1:
+                        msg = msg + " ".join(["내일은", name])
+                    else:
+                        msg = msg + " ".join([str(value)+"일 후는", name])
+            self._state = msg
+        self.hass.add_job(_load_setting)
 
     def get_next_interval(self, now=None):
         """Compute next time an update should occur."""
