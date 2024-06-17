@@ -1,4 +1,4 @@
-![version](https://img.shields.io/badge/version-1.6.1-blue)
+![version](https://img.shields.io/badge/version-1.6.2-blue)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 
 # Anniversary Sensor for Home Assistant
@@ -43,6 +43,7 @@
 | v1.5.1  | 2021.05.29  | added version to manifest.json |
 | v1.6    | 2022.01.29  | 연초 음력처리 개선 |
 | v1.6.1  | 2022.04.04  | device_state_attributes -> extra_state_attributes |
+| v1.6.2  | 2024.06.17  | non-blocking error patch by oukene |
 
 <br>
 
